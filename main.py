@@ -3,6 +3,7 @@ Estudante: Matheus Augusto Ortunes dos Santos
 Curso: Análise e Desenvolvimento de Sistemas
 """
 import random
+import time
 
 dado_verde = "CPCTPC"
 dado_amarelo = "TPCTPC"
@@ -11,79 +12,106 @@ dado_vermelho = "TPTCPT"
 teste = [('T', 1), ('P', 2)]
 
 
-tubo_de_dados = [(dado_verde, 1), dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_amarelo, dado_amarelo,
+tubo_de_dados = [dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_amarelo, dado_amarelo,
                  dado_amarelo, dado_amarelo, dado_vermelho, dado_vermelho, dado_vermelho]
 
 
-def quantidadeJogadores():
+def quantidade_jogadores():
     qtd_jogadores = int(input("Digite a quantidade de jogadores: "))
     if qtd_jogadores < 2 or qtd_jogadores > 8:
         print("Quantidade de jogadores inválida, por favor, selecione entre 2 e 8 jogadores")
-        return quantidadeJogadores()
+        return quantidade_jogadores()
     else:
         for i in range(qtd_jogadores):
             jogador = input(f'Digite o nome do jogador {i + 1}: ')
             lista_de_jogadores.append(jogador)
 
 
-def sorteiaTubo(n=3): # Essa função sorteia por padrão 3 dados entre os 13 do tubo
+def sorteia_tubo(n=3): # Essa função sorteia por padrão 3 dados entre os 13 do tubo
     for i in range(n):
         dados_sorteados.append(random.choice(tubo_de_dados))
-    print(dados_sorteados)
 
+    for dado in dados_sorteados:
+        if dado == "CPCTPC":
+            time.sleep(1)
+            print(f'{jogador} sorteou o dado VERDE')
+        elif dado == "TPCTPC":
+            time.sleep(1)
+            print(f'{jogador} sorteou o dado AMARELO')
+        else:
+            time.sleep(1)
+            print(f'{jogador} sorteou o dado VERMELHO')
 
-def jogaDados(): #Essa função joga os 3 dados que foram sorteados no tubo
+def joga_dados(): #Essa função joga os 3 dados que foram sorteados no tubo
     for dado in dados_sorteados:
         jogada = random.choice(dado)
         sorteio.append(jogada)
+        if dado == "CPCTPC":
+            time.sleep(1)
+            print(f'{jogador} jogou o dado VERDE e o resultado foi: {jogada}')
+        elif dado == "TPCTPC":
+            time.sleep(1)
+            print(f'{jogador} jogou o dado AMARELO e o resultado foi: {jogada}')
+        else:
+            time.sleep(1)
+            print(f'{jogador} jogou o dado VERMELHO e o resultado foi: {jogada}')
 
 
-def continuaJogando():
-    continua_jogando = input("Deseja continuar jogando? (y/n): ")
-    if continua_jogando == "y":
+
+def continua_jogando():
+    deseja_continuar = input("Deseja continuar jogando? (y/n): ")
+    if deseja_continuar == "y":
         return 1
-    elif continua_jogando == "n":
+    elif deseja_continuar == "n":
         return 2
     else:
         print("Resposta inválida, por favor, responda utilizando y ou n")
-        return continuaJogando()
+        return continua_jogando()
 
 x = 0
 y = 0
 
 while x == 0:   #Começando uma nova partida
     lista_de_jogadores = []
-    print("Seja bem vindo ao ZOMBIE DICE")
-    print("Começando um novo jogo")
-    print()
+    print("===================================================")
+    print("+++        Seja bem vindo ao ZOMBIE DICE        +++")
+    print("        +++  Começando um novo jogo  +++")
+    print("===================================================")
 
-    quantidadeJogadores()
+    quantidade_jogadores()
 
     rodada = 1
 
     while y == 0: #Começa uma nova rodada
         print()
-        print(f'Começando a rodada {rodada}')
+        print(f'RODADA {rodada}, PREPARE-SE PARA COMER CÉREBROS!')
 
         for jogador in lista_de_jogadores:
             print(f'É a vez do jogador {jogador}')
+            print()
             dados_sorteados = []
             sorteio = []
 
-            sorteiaTubo()
+            sorteia_tubo()
 
-            jogaDados()
+            time.sleep(1)
+            print()
+            print("===================================================")
+            print("+++          É HORA DE JOGAR OS DADOS           +++")
+            print("===================================================")
+            print()
+
+            joga_dados()
 
             print(sorteio)
 
-            varks = continuaJogando()
-            print(varks)
+            varks = continua_jogando()
 
             if varks == 1:
                 print(sorteio)
-                if "P" in sorteio:
-                    passos = sorteio.count("P")
-                    print(passos)
+                #if "P" in sorteio:
+                 #   passos = sorteio.count("P")
+                 #   print(passos)
 
         print("Acabou a rodada")
         rodada = rodada + 1
