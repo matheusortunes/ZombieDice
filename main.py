@@ -5,22 +5,21 @@ Curso: Análise e Desenvolvimento de Sistemas
 import random
 import time
 
+
+x = 0
+y = 0
 dado_verde = "CPCTPC"
 dado_amarelo = "TPCTPC"
 dado_vermelho = "TPTCPT"
-
-teste = [('T', 1), ('P', 2)]
-
-
 tubo_de_dados = [dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_amarelo, dado_amarelo,
                  dado_amarelo, dado_amarelo, dado_vermelho, dado_vermelho, dado_vermelho]
 
 
-def quantidade_jogadores():
+def quantidade_jogadores(): #Função responsável por definir a quantidade de players que irão jogar
     qtd_jogadores = int(input("Digite a quantidade de jogadores: "))
     if qtd_jogadores < 2 or qtd_jogadores > 8:
         print("Quantidade de jogadores inválida, por favor, selecione entre 2 e 8 jogadores")
-        return quantidade_jogadores()
+        return quantidade_jogadores()   #Retorna a própria função, perguntando novamente a quantidade de jogadores
     else:
         for i in range(qtd_jogadores):
             jogador = input(f'Digite o nome do jogador {i + 1}: ')
@@ -30,8 +29,9 @@ def quantidade_jogadores():
 def sorteia_tubo(n=3): # Essa função sorteia por padrão 3 dados entre os 13 do tubo
     for i in range(n):
         dados_sorteados.append(random.choice(tubo_de_dados))
+#dados_sorteados é uma lista vazia declarada no inicio de cada rodada para cada um dos jogadores
 
-    for dado in dados_sorteados:
+    for dado in dados_sorteados:  #Esse laço apenas verbaliza mais o jogo, o deixando mais interessante para o jogador
         if dado == "CPCTPC":
             time.sleep(1)
             print(f'{jogador} sorteou o dado VERDE')
@@ -41,6 +41,7 @@ def sorteia_tubo(n=3): # Essa função sorteia por padrão 3 dados entre os 13 d
         else:
             time.sleep(1)
             print(f'{jogador} sorteou o dado VERMELHO')
+
 
 def joga_dados(): #Essa função joga os 3 dados que foram sorteados no tubo
     for dado in dados_sorteados:
@@ -57,8 +58,7 @@ def joga_dados(): #Essa função joga os 3 dados que foram sorteados no tubo
             print(f'{jogador} jogou o dado VERMELHO e o resultado foi: {jogada}')
 
 
-
-def continua_jogando():
+def continua_jogando(): #Pergunta se o jogador quer encerrar sua rodada ou continuar jogando os dados
     deseja_continuar = input("Deseja continuar jogando? (y/n): ")
     if deseja_continuar == "y":
         return 1
@@ -68,11 +68,12 @@ def continua_jogando():
         print("Resposta inválida, por favor, responda utilizando y ou n")
         return continua_jogando()
 
-x = 0
-y = 0
 
 while x == 0:   #Começando uma nova partida
     lista_de_jogadores = []
+    tiros = 0
+    passos = 0
+    cerebros = 0
     print("===================================================")
     print("+++        Seja bem vindo ao ZOMBIE DICE        +++")
     print("        +++  Começando um novo jogo  +++")
@@ -86,7 +87,7 @@ while x == 0:   #Começando uma nova partida
         print()
         print(f'RODADA {rodada}, PREPARE-SE PARA COMER CÉREBROS!')
 
-        for jogador in lista_de_jogadores:
+        for jogador in lista_de_jogadores: #Laço para todos os jogadores participarem do jogo
             print(f'É a vez do jogador {jogador}')
             print()
             dados_sorteados = []
