@@ -8,14 +8,14 @@ import time
 
 x = 0
 y = 0
-dado_verde = "CPCTPC"
-dado_amarelo = "TPCTPC"
-dado_vermelho = "TPTCPT"
-tubo_de_dados = [dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_amarelo, dado_amarelo,
-                 dado_amarelo, dado_amarelo, dado_vermelho, dado_vermelho, dado_vermelho]
+dado_verde = ("dado_verde","CPCTPC")
+dado_amarelo = ("dados_amarelo","TPCTPC")
+dado_vermelho = ("dados_vermelhos","TPTCPT")
+tubo_de_dados = [dado_verde[1], dado_verde[1], dado_verde[1], dado_verde[1], dado_verde[1], dado_verde[1], dado_amarelo[1], dado_amarelo[1],
+                 dado_amarelo[1], dado_amarelo[1], dado_vermelho[1], dado_vermelho[1], dado_vermelho[1]]
 
 
-def quantidade_jogadores(): # Função responsável por definir a quantidade de players que irão jogar
+def quantidade_jogadores():  # Função responsável por definir a quantidade de players que irão jogar
     qtd_jogadores = int(input("Digite a quantidade de jogadores: "))
     if qtd_jogadores < 2 or qtd_jogadores > 8:
         print("Quantidade de jogadores inválida, por favor, selecione entre 2 e 8 jogadores")
@@ -26,9 +26,24 @@ def quantidade_jogadores(): # Função responsável por definir a quantidade de 
             lista_de_jogadores.append(jogador)
 
 
-def sorteia_tubo(n=3): # Essa função sorteia por padrão 3 dados entre os 13 do tubo
+def sorteia_tubo(n=3, contador):  # Essa função sorteia por padrão 3 dados entre os 13 do tubo
+    if contador != 0:
+        n = n - contador
     for i in range(n):
-        dados_sorteados.append(random.choice(tubo_de_dados))
+        var = random.randint(0, 12)
+        dados_sorteados.append(tubo_de_dados[var])
+        tubo_de_dados.pop(var)
+
+
+def compara_listas(dados_sorteados, lista_2, contador):
+    if lista_2 is not []:
+        for valor in lista_2:
+            contador = contador + 1
+            dados_sorteados.append(valor)
+        return dados_sorteados, lista_2, contador
+    else:
+        pass
+
 # dados_sorteados é uma lista vazia declarada no inicio de cada rodada para cada um dos jogadores
 
     for dado in dados_sorteados:  # Esse laço apenas verbaliza mais o jogo, o deixando mais interessante para o jogador
@@ -43,7 +58,8 @@ def sorteia_tubo(n=3): # Essa função sorteia por padrão 3 dados entre os 13 d
             print(f'{jogador} sorteou o dado VERMELHO')
 
 
-def joga_dados(cerebros, passos, tiros): # Essa função joga os 3 dados que foram sorteados no tubo
+def joga_dados(dados_sorteados, cerebros, passos, tiros, flag, lista_2):  # Essa função joga os 3 dados
+    # que foram sorteados no tubo
     for dado in dados_sorteados:
         jogada = random.choice(dado)
         sorteio.append(jogada)
@@ -61,13 +77,15 @@ def joga_dados(cerebros, passos, tiros): # Essa função joga os 3 dados que for
             cerebros = cerebros + 1
         elif jogada == "P":
             passos = passos + 1
+            flag = True
+            lista_2.append(dado)
         else:
             tiros = tiros + 1
 
-    return cerebros, passos, tiros
+    return cerebros, passos, tiros, flag, lista_2
 
 
-def scoreboard(cerebros, passos, tiros): # Responsável apenas por imprimir o placar na tela do jogador
+def scoreboard(cerebros, passos, tiros):  # Responsável apenas por imprimir o placar na tela do jogador
     print()
     print("===================================================")
     print("+++++               SCOREBOARD                +++++")
@@ -107,42 +125,47 @@ while x == 0:   # Começando uma nova partida
 
     rodada = 1
 
-    while y == 0: # Começa uma nova rodada
+    while y == 0:  # Começa uma nova rodada
+        lista_2 = []
+        flag = False
+        contador = 0
         print()
         print(f'RODADA {rodada}, PREPARE-SE PARA COMER CÉREBROS!')
 
         for jogador in lista_de_jogadores: # Laço para todos os jogadores participarem do jogo
+            continua = 1
             print(f'É a vez do jogador {jogador}')
             print()
-            dados_sorteados = []
-            sorteio = []
+            while continua == 1:
+                dados_sorteados = []
+                sorteio = []
 
-            sorteia_tubo()
+                dados_sorteados, lista_2 = compara_listas(dados_sorteados, lista_2)
 
-            time.sleep(1)
-            print()
-            print("===================================================")
-            print("+++          É HORA DE JOGAR OS DADOS           +++")
-            print("===================================================")
-            print()
+                sorteia_tubo()
 
-            cerebros, passos, tiros = joga_dados(cerebros, passos, tiros)
+                time.sleep(1)
+                print()
+                print("===================================================")
+                print("+++          É HORA DE JOGAR OS DADOS           +++")
+                print("===================================================")
+                print()
 
-            print(sorteio)
+                dados_sorteados, passos, tiros, flag, lista_2 = joga_dados(dados_sorteados, cerebros, passos, tiros,
+                                                                           flag, lista_2)
 
-            scoreboard(cerebros, passos, tiros)
+                print(f'LISTA 2 --> {lista_2}')
 
-            varks = continua_jogando()
+                print(sorteio)
 
-"""
-Todo código abaixo ainda será desenvolvido.
-"""
+                time.sleep(1)
+                scoreboard(cerebros, passos, tiros)
 
-            #if varks == 1:
-                #print(sorteio)
-                #if "P" in sorteio:
-                 #   passos = sorteio.count("P")
-                 #   print(passos)
+                continua = continua_jogando()
+
+
+
+
 
         #print("Acabou a rodada")
         #rodada = rodada + 1
