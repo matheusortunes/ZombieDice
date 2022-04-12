@@ -7,13 +7,13 @@ import random
 import time
 
 x = 0
-dado_verde = ("dado_verde","CPCTPC")
-dado_amarelo = ("dados_amarelo","TPCTPC")
-dado_vermelho = ("dados_vermelhos","TPTCPT")
+dado_verde = ("dado_verde", "CPCTPC")
+dado_amarelo = ("dados_amarelo", "TPCTPC")
+dado_vermelho = ("dados_vermelhos", "TPTCPT")
 
 
 def pop_all(lista_2_, count=0):
-    for valor in lista_2_:
+    for n in lista_2_:
         lista_2_.pop(count)
         count = count + 1
 
@@ -23,12 +23,12 @@ def quantidade_jogadores(qtd_jogadores_, lista_de_jogadores_):  # Função respo
     qtd_jogadores_ = int(input("Digite a quantidade de jogadores: "))
     if qtd_jogadores_ < 2 or qtd_jogadores_ > 8:
         print("Quantidade de jogadores inválida, por favor, selecione entre 2 e 8 jogadores")
-        return quantidade_jogadores(qtd_jogadores_, lista_de_jogadores_)   # Retorna a própria função, perguntando
+        return quantidade_jogadores(qtd_jogadores_, lista_de_jogadores_)  # Retorna a própria função, perguntando
         # novamente a quantidade de jogadores
     else:
         for i in range(qtd_jogadores_):
-            jogador = input(f'Digite o nome do jogador {i + 1}: ')
-            lista_de_jogadores_.append(jogador)
+            jogador_ = input(f'Digite o nome do jogador {i + 1}: ')
+            lista_de_jogadores_.append(jogador_)
         return qtd_jogadores_, lista_de_jogadores_
 
 
@@ -62,7 +62,8 @@ def sorteia_tubo(contador_, dados_sorteados_, n=3):  # Essa função sorteia por
             print(f'{jogador} sorteou o dado VERMELHO')
 
 
-def joga_dados(dados_sorteados_, cerebros_, passos_, tiros_, lista_2_, indice_jogador_):  # Essa função joga os 3 dados
+def joga_dados(dados_sorteados_, cerebros_individual_, passos_individual_, tiros_individual_, lista_2_,
+               indice_jogador_):  # Essa função joga os 3 dados
     # que foram sorteados no tubo
     for dado in dados_sorteados_:
         jogada = random.choice(dado)
@@ -78,17 +79,35 @@ def joga_dados(dados_sorteados_, cerebros_, passos_, tiros_, lista_2_, indice_jo
             print(f'{jogador} jogou o dado VERMELHO e o resultado foi: {jogada}')
 
         if jogada == "C":
-            cerebros[indice_jogador_][1] += 1  # x[0][1] = 1
+            cerebros_individual_[indice_jogador_][1] += 1
+            print(cerebros_individual_)
         elif jogada == "P":
-            passos[indice_jogador_][1] += 1
+            passos_individual_[indice_jogador_][1] += 1
+            print(passos_individual_)
             lista_2_.append(dado)
         else:
-            tiros[indice_jogador_][1] += 1
+            print(tiros_individual_)
+            tiros_individual_[indice_jogador_][1] += 1
 
-    return cerebros_, passos_, tiros_, lista_2_
+    return cerebros_individual_, passos_individual_, tiros_individual_, lista_2_
 
 
-def scoreboard(cerebros_, passos_, tiros_, indice_jogador_):  # Responsável apenas por imprimir o placar na tela do jogador
+def score_individual(lista_de_jogadores_, cerebros_, passos_, tiros_, cerebros_individual_, passos_individual_,
+                     tiros_individual_):
+    for jogador_ in lista_de_jogadores_:
+        placar = [jogador_, 0]
+        cerebros_.append(placar)
+        passos_.append(placar)
+        tiros_.append(placar)
+        cerebros_individual_.append(placar)
+        passos_individual_.append(placar)
+        tiros_individual_.append(placar)
+
+    return cerebros_, passos_, tiros_, cerebros_individual_, passos_individual_, tiros_individual_
+
+
+def scoreboard(cerebros_, passos_, tiros_,
+               indice_jogador_):  # Responsável apenas por imprimir o placar na tela do jogador
     print()
     print("===================================================")
     print("+++++               SCOREBOARD                +++++")
@@ -103,7 +122,7 @@ def scoreboard(cerebros_, passos_, tiros_, indice_jogador_):  # Responsável ape
     print()
 
 
-def continua_jogando(): # Pergunta se o jogador quer encerrar sua rodada ou continuar jogando os dados
+def continua_jogando():  # Pergunta se o jogador quer encerrar sua rodada ou continuar jogando os dados
     deseja_continuar = input("Deseja continuar jogando? (y/n): ")
     if deseja_continuar == "y":
         return 1
@@ -114,7 +133,7 @@ def continua_jogando(): # Pergunta se o jogador quer encerrar sua rodada ou cont
         return continua_jogando()
 
 
-while x == 0:   # Começando uma nova partida
+while x == 0:  # Começando uma nova partida
     y = 0
     qtd_jogadores = 0
     lista_de_jogadores = []
@@ -124,6 +143,10 @@ while x == 0:   # Começando uma nova partida
     print("===================================================")
 
     qtd_jogadores, lista_de_jogadores = quantidade_jogadores(qtd_jogadores, lista_de_jogadores)
+
+    cerebros = []
+    passos = []
+    tiros = []
 
     rodada = 1
 
@@ -137,9 +160,6 @@ while x == 0:   # Começando uma nova partida
 
         for jogador in lista_de_jogadores:  # Laço para todos os jogadores participarem do jogo
             indice_jogador = 0
-            cerebros = [[f'CEREBROS COMIDOS POR {jogador}', 0] for n in range(1)]
-            passos = [[f'PASSOS DADOS POR {jogador}', 0] for n in range(1)]
-            tiros = [[f'TIROS TOMADOS POR {jogador}', 0] for n in range(1)]
             tubo_de_dados = [dado_verde[1], dado_verde[1], dado_verde[1], dado_verde[1], dado_verde[1],
                              dado_verde[1], dado_amarelo[1], dado_amarelo[1],
                              dado_amarelo[1], dado_amarelo[1], dado_vermelho[1], dado_vermelho[1], dado_vermelho[1]]
@@ -147,7 +167,16 @@ while x == 0:   # Começando uma nova partida
             print(f'É a vez do jogador {jogador}')
             print()
             while continua == 1:  # Início do turno
+                cerebros_individual = []
+                passos_individual = []
+                tiros_individual = []
+                cerebros, passos, tiros, cerebros_individual, passos_individual, tiros_individual = \
+                    score_individual(lista_de_jogadores, cerebros, passos, tiros, cerebros_individual,
+                                     passos_individual, tiros_individual)
                 print(tubo_de_dados)
+                print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
+                print(f'PASSOS INDIVIDUAL {passos_individual}')
+                print(f'TIROS INDIVIDUAL {tiros_individual}')
                 dados_sorteados = []
                 sorteio = []
 
@@ -165,8 +194,33 @@ while x == 0:   # Começando uma nova partida
                 print("===================================================")
                 print()
 
-                cerebros, passos, tiros, lista_2 = joga_dados(dados_sorteados, cerebros, passos, tiros, lista_2,
-                                                              indice_jogador)
+                print("FUNÇÃO JOGA DADOS")
+                print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
+                print(f'PASSOS INDIVIDUAL {passos_individual}')
+                print(f'TIROS INDIVIDUAL {tiros_individual}')
+
+                cerebros_individual, passos_individual, tiros_individual, lista_2 = joga_dados(dados_sorteados,
+                                                                                               cerebros_individual,
+                                                                                               passos_individual,
+                                                                                               tiros_individual,
+                                                                                               lista_2, indice_jogador)
+
+                print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
+                print(f'PASSOS INDIVIDUAL {passos_individual}')
+                print(f'TIROS INDIVIDUAL {tiros_individual}')
+
+                """if tiros_individual[indice_jogador][1] == 3:
+                    print("VOCÊ TOMOU 3 TIROS! SUA PONTUAÇÃO DO TURNO SERÁ ZERADA!")
+                    pop_all(cerebros_individual), pop_all(passos_individual), pop_all(tiros_individual)
+                    continua = 2
+                else:
+                    cerebros[indice_jogador][1] = cerebros[indice_jogador][1] + cerebros_individual[indice_jogador][1]
+                    passos[indice_jogador][1] = passos[indice_jogador][1] + passos_individual[indice_jogador][1]
+                    tiros[indice_jogador][1] = tiros[indice_jogador][1] + tiros_individual[indice_jogador][1]
+                    pop_all(cerebros_individual), pop_all(passos_individual), pop_all(tiros_individual)
+
+                    print(f'PONTUACAO TOTAL: {cerebros}, {passos}, {tiros}')
+                    """
 
                 print(sorteio)
 
@@ -175,18 +229,18 @@ while x == 0:   # Começando uma nova partida
 
                 print(cerebros, passos, tiros)
 
+                # print(cerebros_total, passos_total, tiros_total)
+
                 continua = continua_jogando()
 
             indice_jogador += 1
 
         rodada = rodada + 1
 
+        # print("Acabou a rodada")
+        # rodada = rodada + 1
 
-        #print("Acabou a rodada")
-        #rodada = rodada + 1
-
-        #if rodada == 3:
+        # if rodada == 3:
         #    y = 1
 
-
-        #random.choices(lista_de_dados)
+        # random.choices(lista_de_dados)
