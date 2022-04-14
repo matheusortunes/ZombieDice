@@ -83,13 +83,10 @@ def joga_dados(dados_sorteados_, cerebros_individual_, passos_individual_, tiros
 
         if jogada == "C":
             cerebros_individual_[indice_jogador_][1] += 1
-            print(cerebros_individual_)
         elif jogada == "P":
             passos_individual_[indice_jogador_][1] += 1
-            print(passos_individual_)
             lista_2_.append(dado)
         else:
-            print(tiros_individual_)
             tiros_individual_[indice_jogador_][1] += 1
 
     return cerebros_individual_, passos_individual_, tiros_individual_, lista_2_
@@ -151,6 +148,12 @@ while x == 0:  # Começando uma nova partida
     cerebros = []
     passos = []
     tiros = []
+    cerebros_individual = []
+    passos_individual = []
+    tiros_individual = []
+    cerebros, passos, tiros, cerebros_individual, passos_individual, tiros_individual = \
+        score_individual(lista_de_jogadores, cerebros, passos, tiros, cerebros_individual,
+                         passos_individual, tiros_individual)
 
     rodada = 1
 
@@ -159,30 +162,21 @@ while x == 0:  # Começando uma nova partida
         contador = 0
         print()
         print("===================================================")
-        print(f'RODADA {rodada}, PREPARE-SE PARA COMER CÉREBROS!')
+        print(f'     RODADA {rodada}, PREPARE-SE PARA COMER CÉREBROS!')
         print("===================================================")
 
         for jogador in lista_de_jogadores:  # Laço para todos os jogadores participarem do jogo
-            indice_jogador = 0
+            indice_jogador = 1
             tubo_de_dados = [dado_verde[1], dado_verde[1], dado_verde[1], dado_verde[1], dado_verde[1],
                              dado_verde[1], dado_amarelo[1], dado_amarelo[1],
                              dado_amarelo[1], dado_amarelo[1], dado_vermelho[1], dado_vermelho[1], dado_vermelho[1]]
             continua = 1
+            print()
             print(f'É a vez do jogador {jogador}')
             print()
             while continua == 1:  # Início do turno
-                cerebros_individual = []
-                passos_individual = []
-                tiros_individual = []
-                cerebros, passos, tiros, cerebros_individual, passos_individual, tiros_individual = \
-                    score_individual(lista_de_jogadores, cerebros, passos, tiros, cerebros_individual,
-                                     passos_individual, tiros_individual)
                 print(tubo_de_dados)
 
-                # print para debugar
-                print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
-                print(f'PASSOS INDIVIDUAL {passos_individual}')
-                print(f'TIROS INDIVIDUAL {tiros_individual}')
                 dados_sorteados = []
                 sorteio = []
 
@@ -200,26 +194,11 @@ while x == 0:  # Começando uma nova partida
                 print("===================================================")
                 print()
 
-
-                # print para debugar
-                print("FUNÇÃO JOGA DADOS")
-                print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
-                print(f'PASSOS INDIVIDUAL {passos_individual}')
-                print(f'TIROS INDIVIDUAL {tiros_individual}')
-
                 cerebros_individual, passos_individual, tiros_individual, lista_2 = joga_dados(dados_sorteados,
                                                                                                cerebros_individual,
                                                                                                passos_individual,
                                                                                                tiros_individual,
                                                                                                lista_2, indice_jogador)
-
-                # print para debugar
-                print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
-                print(f'PASSOS INDIVIDUAL {passos_individual}')
-                print(f'TIROS INDIVIDUAL {tiros_individual}')
-
-                """
-                COMENTADO PARA NÃO GERAR ERROS
                 
                 if tiros_individual[indice_jogador][1] == 3:
                     print("VOCÊ TOMOU 3 TIROS! SUA PONTUAÇÃO DO TURNO SERÁ ZERADA!")
@@ -232,12 +211,13 @@ while x == 0:  # Começando uma nova partida
                     pop_all(cerebros_individual), pop_all(passos_individual), pop_all(tiros_individual)
 
                     print(f'PONTUACAO TOTAL: {cerebros}, {passos}, {tiros}')
-                    """
 
                 print(sorteio)
 
                 time.sleep(1)
                 scoreboard(cerebros, passos, tiros, indice_jogador)
+
+                print(cerebros_individual, passos_individual, tiros_individual)
 
                 print(cerebros, passos, tiros)
 
