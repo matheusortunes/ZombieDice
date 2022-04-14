@@ -13,6 +13,7 @@ dado_vermelho = ("dados_vermelhos", "TPTCPT")
 
 
 def pop_all(lista_2_, count=0):
+    # Função simples para apagar o contéudo dentro de uma lista
     for n in lista_2_:
         lista_2_.pop(count)
         count = count + 1
@@ -33,6 +34,8 @@ def quantidade_jogadores(qtd_jogadores_, lista_de_jogadores_):  # Função respo
 
 
 def compara_listas(dados_sorteados_, lista_2_, contador_):
+    # Essa é uma lista extra para implementação da regra dos passos, todo dado que for jogado e que resultar em um passo
+    # será adicionado a lista_2_, dessa forma consigo adicionar o mesmo dado que rolou P no próximo turno
     if lista_2_ is not []:
         for valor in lista_2_:
             contador_ = contador_ + 1
@@ -94,6 +97,7 @@ def joga_dados(dados_sorteados_, cerebros_individual_, passos_individual_, tiros
 
 def score_individual(lista_de_jogadores_, cerebros_, passos_, tiros_, cerebros_individual_, passos_individual_,
                      tiros_individual_):
+    # Essa função é responsável por criar a lista com as pontuações vazias para cada jogador da partida
     for jogador_ in lista_de_jogadores_:
         placar = [jogador_, 0]
         cerebros_.append(placar)
@@ -174,6 +178,8 @@ while x == 0:  # Começando uma nova partida
                     score_individual(lista_de_jogadores, cerebros, passos, tiros, cerebros_individual,
                                      passos_individual, tiros_individual)
                 print(tubo_de_dados)
+
+                # print para debugar
                 print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
                 print(f'PASSOS INDIVIDUAL {passos_individual}')
                 print(f'TIROS INDIVIDUAL {tiros_individual}')
@@ -194,6 +200,8 @@ while x == 0:  # Começando uma nova partida
                 print("===================================================")
                 print()
 
+
+                # print para debugar
                 print("FUNÇÃO JOGA DADOS")
                 print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
                 print(f'PASSOS INDIVIDUAL {passos_individual}')
@@ -205,11 +213,15 @@ while x == 0:  # Começando uma nova partida
                                                                                                tiros_individual,
                                                                                                lista_2, indice_jogador)
 
+                # print para debugar
                 print(f'CEREBROS INDIVIDUAL {cerebros_individual}')
                 print(f'PASSOS INDIVIDUAL {passos_individual}')
                 print(f'TIROS INDIVIDUAL {tiros_individual}')
 
-                """if tiros_individual[indice_jogador][1] == 3:
+                """
+                COMENTADO PARA NÃO GERAR ERROS
+                
+                if tiros_individual[indice_jogador][1] == 3:
                     print("VOCÊ TOMOU 3 TIROS! SUA PONTUAÇÃO DO TURNO SERÁ ZERADA!")
                     pop_all(cerebros_individual), pop_all(passos_individual), pop_all(tiros_individual)
                     continua = 2
