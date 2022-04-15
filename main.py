@@ -20,7 +20,8 @@ def quantidade_jogadores(qtd_jogadores_, lista_de_jogadores_):  # Função respo
         return quantidade_jogadores(qtd_jogadores_, lista_de_jogadores_)  # Retorna a própria função, perguntando
         # novamente a quantidade de jogadores
     else:
-        for i in range(qtd_jogadores_):
+        for i in range(qtd_jogadores_):  # Cada jogador é adicionando a lista de jogadores, além do nome do jogador
+            # também é adicionando um par de chave-valor que representa o score dele em toda a partida
             nome_ = input(f'Digite o nome do jogador {i + 1}: ')
             jogador_ = {"Nome": nome_, "Score": 0}
             lista_de_jogadores_.append(jogador_)
@@ -59,13 +60,11 @@ def sorteia_tubo(contador_, dados_sorteados_, n=3):  # Essa função sorteia por
             print(f'{jogador["Nome"]} sorteou o dado VERMELHO')
 
 
-def joga_dados(dados_sorteados_, score_rodada_, lista_2_):
-    # Essa função joga os 3 dados
-    # que foram sorteados no tubo
-    for dado in dados_sorteados_:
+def joga_dados(dados_sorteados_, score_rodada_, lista_2_):  # Essa função joga os 3 dados que foram sorteados no tubo
+    for dado in dados_sorteados_:  # Para cada dado sorteado, é feito uma jogada, caindo em uma das 6 faces do dado
         jogada = random.choice(dado)
         sorteio.append(jogada)
-        if dado == "CPCTPC":
+        if dado == "CPCTPC":  # Essa série de condicionais serve para verbalizar o jogo e o deixa mais interessante
             time.sleep(0.5)
             print(f'{jogador["Nome"]} jogou o dado VERDE e o resultado foi: {jogada}')
         elif dado == "TPCTPC":
@@ -75,7 +74,7 @@ def joga_dados(dados_sorteados_, score_rodada_, lista_2_):
             time.sleep(0.5)
             print(f'{jogador["Nome"]} jogou o dado VERMELHO e o resultado foi: {jogada}')
 
-        if jogada == "C":
+        if jogada == "C":  # Essa segunda série de condicionais é responsável por somar a face sorteada em score_rodada
             score_rodada_["CEREBROS"] += 1
         elif jogada == "P":
             score_rodada_["PASSOS"] += 1
@@ -86,7 +85,7 @@ def joga_dados(dados_sorteados_, score_rodada_, lista_2_):
     return score_rodada_, lista_2_
 
 
-def scoreboard(score_rodada_):  # Imprime o placar na tela do jogador
+def scoreboard(score_rodada_):  # Imprime o placar do turno na tela do jogador
     print()
     print("===================================================")
     print("+++++               SCOREBOARD                +++++")
@@ -101,7 +100,7 @@ def scoreboard(score_rodada_):  # Imprime o placar na tela do jogador
     print()
 
 
-def continua_jogando():  # Pergunta se o jogador quer encerrar sua rodada ou continuar jogando os dados
+def continua_jogando():  # Possibilita o jogador a encerrar seu turno ou continuar jogando
     parar = input("Deseja continuar jogando? (s/n): ")
     if parar == "s":
         return 1
@@ -174,7 +173,7 @@ while fim:  # Começando uma nova partida
                             print("===================================================")
                             print(f'+++   O JOGADOR {jogador["Nome"]} VENCEU A PARTIDA!    +++')
                             print("===================================================")
-                            time.sleep(2)
+                            time.sleep(1)
                             exit()
                         else:
                             time.sleep(0.5)
