@@ -110,11 +110,11 @@ def scoreboard(cerebros_, passos_, tiros_, indice_jogador_):  # Imprime o placar
     print("===================================================")
     print()
     time.sleep(0.5)
-    print(f'ATÉ AGORA VOCÊ COMEU {cerebros_[indice_jogador_][1]} CEREBRO(S)!')
+    print(f'ATÉ AGORA VOCÊ COMEU {cerebros_} CEREBRO(S)!')
     time.sleep(0.5)
-    print(f'SUA CONTAGEM DE PASSOS É DE {passos_[indice_jogador_][1]} NO TOTAL!')
+    print(f'SUA CONTAGEM DE PASSOS É DE {passos_} NO TOTAL!')
     time.sleep(0.5)
-    print(f'VOCÊ TOMOU {tiros_[indice_jogador_][1]} TIRO(S)')
+    print(f'VOCÊ TOMOU {tiros_} TIRO(S)')
     print()
 
 
@@ -173,6 +173,9 @@ while x == 0:  # Começando uma nova partida
                 dados_sorteados = []
                 sorteio = []
 
+                print(cerebros)
+                print(type(cerebros))
+
                 dados_sorteados, lista_2, contador = compara_listas(dados_sorteados, lista_2, contador)
 
                 sorteia_tubo(contador, dados_sorteados)
@@ -190,20 +193,24 @@ while x == 0:  # Começando uma nova partida
                 cerebros_turno, passos_turno, tiros_turno, lista_2 = joga_dados(dados_sorteados, cerebros_turno,
                                                                                 passos_turno, tiros_turno, lista_2,)
 
+                print(cerebros_turno, passos_turno, tiros_turno)
+
                 if tiros_turno == 3:
                     print("VOCÊ TOMOU 3 TIROS! SUA PONTUAÇÃO DO TURNO SERÁ ZERADA!")
                     continua = 2
                 else:
-                    cerebros[indice_jogador][1] = cerebros[indice_jogador][1] + cerebros_turno
-                    passos[indice_jogador][1] = passos[indice_jogador][1] + passos_turno
-                    tiros[indice_jogador][1] = tiros[indice_jogador][1] + tiros_turno
+                    cerebros = cerebros[indice_jogador][1] + cerebros_turno
+                    passos = passos[indice_jogador][1] + passos_turno
+                    tiros = tiros[indice_jogador][1] + tiros_turno
+
+                    time.sleep(1)
+                    scoreboard(cerebros, passos, tiros, indice_jogador)
 
                     print(f'PONTUACAO TOTAL: {cerebros}, {passos}, {tiros}')
 
                 print(sorteio)
 
                 time.sleep(1)
-                scoreboard(cerebros, passos, tiros, indice_jogador)
 
                 print(cerebros, passos, tiros)
 
@@ -215,10 +222,3 @@ while x == 0:  # Começando uma nova partida
 
         rodada = rodada + 1
 
-        # print("Acabou a rodada")
-        # rodada = rodada + 1
-
-        # if rodada == 3:
-        #    y = 1
-
-        # random.choices(lista_de_dados)
