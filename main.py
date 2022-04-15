@@ -110,11 +110,11 @@ def scoreboard(cerebros_, passos_, tiros_, indice_jogador_):  # Imprime o placar
     print("===================================================")
     print()
     time.sleep(0.5)
-    print(f'ATÉ AGORA VOCÊ COMEU {cerebros_} CEREBRO(S)!')
+    print(f'ATÉ AGORA VOCÊ COMEU {cerebros_[indice_jogador_][1]} CEREBRO(S)!')
     time.sleep(0.5)
-    print(f'SUA CONTAGEM DE PASSOS É DE {passos_} NO TOTAL!')
+    print(f'SUA CONTAGEM DE PASSOS É DE {passos_[indice_jogador_][1]} NO TOTAL!')
     time.sleep(0.5)
-    print(f'VOCÊ TOMOU {tiros_} TIRO(S)')
+    print(f'VOCÊ TOMOU {tiros_[indice_jogador_][1]} TIRO(S)')
     print()
 
 
@@ -193,15 +193,19 @@ while x == 0:  # Começando uma nova partida
                 cerebros_turno, passos_turno, tiros_turno, lista_2 = joga_dados(dados_sorteados, cerebros_turno,
                                                                                 passos_turno, tiros_turno, lista_2,)
 
+                print(cerebros, passos, tiros)
+                print(type(cerebros))
+                print(type(cerebros[0]))
+
                 print(cerebros_turno, passos_turno, tiros_turno)
 
                 if tiros_turno == 3:
                     print("VOCÊ TOMOU 3 TIROS! SUA PONTUAÇÃO DO TURNO SERÁ ZERADA!")
                     continua = 2
                 else:
-                    cerebros = cerebros[indice_jogador][1] + cerebros_turno
-                    passos = passos[indice_jogador][1] + passos_turno
-                    tiros = tiros[indice_jogador][1] + tiros_turno
+                    cerebros = [i+cerebros_turno for i in cerebros[indice_jogador]]  # b[s] = [i+100 for i in b[s]]
+                    passos = [i+passos_turno for i in passos[indice_jogador][1]]
+                    tiros = [i+tiros_turno for i in tiros[indice_jogador][1]]
 
                     time.sleep(1)
                     scoreboard(cerebros, passos, tiros, indice_jogador)
