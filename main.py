@@ -162,13 +162,16 @@ while fim:  # Começando uma nova partida
                 score_rodada, lista_2 = joga_dados(dados_sorteados, score_rodada, lista_2,)
                 time.sleep(1)
 
-                if score_rodada["TIROS"] < 3:
+                if score_rodada["TIROS"] < 3:  # Caso a quantidade de tiros sofridos no turno seja igual a 3, o jogador
+                    # perde todo o seu score que havia conseguido no turno
                     scoreboard(score_rodada)
                     turno = continua_jogando()
                     print()
-                    if turno == 2:
+                    if turno == 2:  # Essa condicional recebe a resposta do jogador, caso ele decida parar de jogar,
+                        # sua pontuação do turno será salva em seu score total
                         jogador["Score"] += score_rodada["CEREBROS"]
-                        if jogador["Score"] >= 13:
+                        if jogador["Score"] >= 13:  # Essa é a condicional de vitória, o primeiro jogador que atingir
+                            # 13 cérebros na partida vence
                             time.sleep(0.5)
                             print("===================================================")
                             print(f'+++   O JOGADOR {jogador["Nome"]} VENCEU A PARTIDA!    +++')
